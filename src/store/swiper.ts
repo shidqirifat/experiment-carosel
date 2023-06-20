@@ -1,19 +1,19 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { create } from "zustand";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { create } from 'zustand'
 
 type Status = {
-  isBeginning: boolean;
-  isEnd: boolean;
-};
+  isBeginning: boolean
+  isEnd: boolean
+}
 
 type State = {
-  swiper: any;
-};
+  swiper: any
+}
 
 type Action = {
-  setSwiper: (swiper: any) => void;
-  updateActiveSlide: (status: Status) => void;
-};
+  setSwiper: (swiper: any) => void
+  updateActiveSlide: (status: Status) => void
+}
 
 export const useSwiper = create<State & Status & Action>((set) => ({
   swiper: {
@@ -26,4 +26,4 @@ export const useSwiper = create<State & Status & Action>((set) => ({
   setSwiper: (swiper: any) => set(() => ({ swiper })),
   updateActiveSlide: (status: Status) =>
     set(() => ({ isBeginning: status.isBeginning, isEnd: status.isEnd })),
-}));
+}))
