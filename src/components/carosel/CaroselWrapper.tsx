@@ -6,7 +6,7 @@ import { getProducts } from '../../services/product'
 
 export default function CaroselWrapper() {
   const { data: products } = useQuery({
-    queryKey: ['products'],
+    queryKey: ['carosel'],
     queryFn: getProducts,
   })
 

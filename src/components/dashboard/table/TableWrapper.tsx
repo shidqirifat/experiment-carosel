@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { Product } from '../../../services/product'
 import {
   Table,
   TableBody,
@@ -8,14 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from '../../ui/table'
-import { getProducts } from '../../../services/product'
 
-export function TableProduct() {
-  const { data: products } = useQuery({
-    queryKey: ['table'],
-    queryFn: getProducts,
-  })
+type TableProps = {
+  products: Product[]
+}
 
+export default function TableWrapper({ products }: TableProps) {
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
