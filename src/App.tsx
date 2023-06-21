@@ -9,6 +9,7 @@ import {
   Filters,
   initialFilter,
 } from './components/dashboard/filter/type'
+import { TableProduct } from './components/dashboard/table/TableProduct'
 
 function App() {
   const [filter, setFilter] = useState<Filters>(initialFilter)
@@ -34,6 +35,7 @@ function App() {
           onSave={handleSave}
           onRemove={handleRemove}
         />
+        <TableProduct />
       </div>
     </div>
   )

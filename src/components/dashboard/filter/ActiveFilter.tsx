@@ -33,7 +33,7 @@ const ButtonRemove = ({ children, onRemove }: ButtonRemoveType) => {
 
 export default function ActiveFilter({ children, onRemove }: ActiveFilterType) {
   return (
-    <div className="mt-4">
+    <div className="my-4">
       {children.map((filter) => (
         <ButtonRemove key={filter.field} onRemove={onRemove}>
           {filter}
