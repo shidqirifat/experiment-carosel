@@ -1,6 +1,6 @@
-import ButtonSlide from "./ButtonSlide";
+import ButtonSlide from './ButtonSlide'
 
-export default function ProductHeader() {
+export default function CaroselHeader() {
   return (
     <div className="px-6 md:px-12 flex justify-between items-center mb-5 mt-8">
       <h1 className="text-black font-medium text-2xl leading-7">
@@ -14,5 +14,5 @@ export default function ProductHeader() {
         </div>
       </div>
     </div>
-  );
+  )
 }

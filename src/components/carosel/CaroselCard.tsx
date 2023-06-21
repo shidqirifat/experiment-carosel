@@ -1,8 +1,8 @@
 import { Product } from '../../services/product'
-import ProgressiveImage from '../../components/global/ProgressiveImage'
+import ProgressiveImage from '../global/ProgressiveImage'
 import { toCurrency } from '../../utils/currency'
 
-export default function ProductCard(props: Product) {
+export default function CaroselCard(props: Product) {
   return (
     <div>
       <ProgressiveImage

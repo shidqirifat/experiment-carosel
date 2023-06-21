@@ -5,9 +5,9 @@ import { Scrollbar } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useSwiper } from '../../store/swiper'
 import { Product } from '../../services/product'
-import SkeletonProduct from './SkeletonProduct'
+import SkeletonCard from './SkeletonCard'
 import { fakeArray } from '../../utils/array'
-import ProductCard from './ProductCard'
+import CaroselCard from './CaroselCard'
 import { useCallback } from 'react'
 
 type ProductCaroselProps = { products: Product[] }
@@ -17,7 +17,7 @@ const breakpoints = {
   768: { slidesPerView: 3 },
 }
 
-export default function ProductCarosel({ products }: ProductCaroselProps) {
+export default function Carosel({ products }: ProductCaroselProps) {
   const { setSwiper, updateActiveSlide } = useSwiper()
 
   const initialSwiper = useCallback(
@@ -44,12 +44,12 @@ export default function ProductCarosel({ products }: ProductCaroselProps) {
         {products.length === 0
           ? fakeArray(4).map((item) => (
               <SwiperSlide key={item}>
-                <SkeletonProduct />
+                <SkeletonCard />
               </SwiperSlide>
             ))
           : products.map((product) => (
               <SwiperSlide key={product.id}>
-                <ProductCard {...product} />
+                <CaroselCard {...product} />
               </SwiperSlide>
             ))}
       </Swiper>
