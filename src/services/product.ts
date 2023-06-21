@@ -14,7 +14,7 @@ export type Product = {
 }
 
 const getProducts = async (): Promise<Product[]> => {
-  const product = await api.get('/products?offset=10&limit=6')
+  const product = await api.get('/products?offset=0&limit=6')
   return product
 }
 
