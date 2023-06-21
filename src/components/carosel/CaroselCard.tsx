@@ -5,13 +5,7 @@ import { toCurrency } from '../../utils/currency'
 export default function CaroselCard(props: Product) {
   return (
     <div>
-      <ProgressiveImage
-        src={props.images[0]}
-        alt={props.title}
-        width="100%"
-        height="100%"
-        className="aspect-square object-cover"
-      />
+      <ProgressiveImage src={props.images[0]} alt={props.title} />
       <div className="pt-5 pr-4">
         <h2 className="text-black font-medium text-base leading-6">
           {props.title}

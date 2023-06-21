@@ -20,9 +20,7 @@ export default function Wrapper() {
     setFilter((prev) => ({ ...prev, [field]: { label: '', value: undefined } }))
   }
 
-  const handleClear = () => {
-    setFilter(initialFilter)
-  }
+  const handleClear = () => setFilter(initialFilter)
 
   const handleSave = (filtered: Filters): void => setFilter(filtered)
 
