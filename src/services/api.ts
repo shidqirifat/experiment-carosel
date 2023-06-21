@@ -1,8 +1,9 @@
+import axios from 'axios'
+
 const BASE_URL = 'https://api.escuelajs.co/api/v1'
 
-const get = async (url: string): Promise<[]> => {
-  const res = await fetch(`${BASE_URL}${url}`)
-  const data = await res.json()
+const get = async (url: string, params?: object): Promise<[]> => {
+  const { data } = await axios.get(`${BASE_URL}${url}`, { params })
   return data
 }
 

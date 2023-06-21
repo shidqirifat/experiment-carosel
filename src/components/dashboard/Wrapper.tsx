@@ -9,12 +9,19 @@ export default function Wrapper() {
   const [filter, setFilter] = useState<Filters>(initialFilter)
 
   const { data: products } = useQuery({
-    queryKey: ['table'],
+    queryKey: [
+      'table',
+      { category: filter.category.value, rangePrice: filter.rangePrice.value },
+    ],
     queryFn: getProducts,
   })
 
   const handleRemove = (field: Filter): void => {
     setFilter((prev) => ({ ...prev, [field]: { label: '', value: undefined } }))
+  }
+
+  const handleClear = () => {
+    setFilter(initialFilter)
   }
 
   const handleSave = (filtered: Filters): void => setFilter(filtered)
@@ -25,6 +32,7 @@ export default function Wrapper() {
         initialFilter={filter}
         onSave={handleSave}
         onRemove={handleRemove}
+        onClear={handleClear}
       />
       <TableWrapper products={products || []} />
     </div>

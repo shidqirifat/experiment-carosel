@@ -13,8 +13,43 @@ export type Product = {
   images: string[]
 }
 
-const getProducts = async (): Promise<Product[]> => {
-  const product = await api.get('/products?offset=0&limit=6')
+type FilterKey = { category?: string; rangePrice?: string }
+
+type ProductKey = {
+  queryKey: [string, FilterKey?]
+}
+
+type RangePrice = { price_min?: string; price_max?: string }
+
+const getMinAndMaxRangePrice = (rangePrice = ''): RangePrice => {
+  if (rangePrice === '') {
+    return { price_min: undefined, price_max: undefined }
+  }
+
+  const priceArr = rangePrice.split(' ')
+  return { price_min: priceArr[0], price_max: priceArr[2] }
+}
+
+const getFilterFromKey = (keys?: FilterKey) => {
+  if (typeof keys === 'object') {
+    return {
+      category: keys.category,
+      ...getMinAndMaxRangePrice(keys.rangePrice),
+    }
+  }
+
+  return { category: undefined, ...getMinAndMaxRangePrice('') }
+}
+
+const getProducts = async ({ queryKey }: ProductKey): Promise<Product[]> => {
+  const { category, price_min, price_max } = getFilterFromKey(queryKey[1])
+  const product = await api.get('/products', {
+    offset: 0,
+    limit: 6,
+    categoryId: category,
+    price_min,
+    price_max,
+  })
   return product
 }
 

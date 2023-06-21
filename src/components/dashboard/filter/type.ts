@@ -16,6 +16,7 @@ export type FilterDashboardProps = {
   initialFilter: Filters
   onSave: (filter: Filters) => void
   onRemove: (field: Filter) => void
+  onClear: () => void
 }
 
 const initialFilter = {

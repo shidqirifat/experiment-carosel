@@ -15,7 +15,7 @@ export type Option = {
 type FilterItemType = {
   label: string
   placeholder?: string
-  options: Option[]
+  options?: Option[]
   value?: string
   onChange: (value?: Option) => void
 }
@@ -28,7 +28,7 @@ export default function FilterItem({
   onChange,
 }: FilterItemType) {
   const handleChange = (selectedValue: string): void => {
-    const selected = options.find((option) => option.value === selectedValue)
+    const selected = options?.find((option) => option.value === selectedValue)
     onChange(selected)
   }
 
@@ -41,7 +41,7 @@ export default function FilterItem({
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {options.map((option) => (
+            {options?.map((option) => (
               <SelectItem key={option.value} value={option.value || ''}>
                 {option.label}
               </SelectItem>

@@ -15,19 +15,33 @@ import {
   ActiveFilterItem,
   Filter,
   FilterDashboardProps,
-  categories,
   rangePrice,
   resetFilter,
 } from './type'
 import ActiveFilter from './ActiveFilter'
+import { useQuery } from '@tanstack/react-query'
+import { getCategories } from '../../../services/category'
 
 export default function FilterDashboard({
   initialFilter,
   onSave,
   onRemove,
+  onClear,
 }: FilterDashboardProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filter, setFilter] = useState(initialFilter)
+
+  const { data: categories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const data = await getCategories()
+
+      return data.map((category) => ({
+        label: category.name,
+        value: category.id.toString(),
+      }))
+    },
+  })
 
   const handleChange = (field: Filter, selected?: Option): void => {
     setFilter((prev) => ({ ...prev, [field]: selected }))
@@ -64,7 +78,7 @@ export default function FilterDashboard({
               <FilterItem
                 label="Category"
                 placeholder="Select the category"
-                options={categories}
+                options={categories || []}
                 value={filter.category.value}
                 onChange={(selected) => handleChange('category', selected)}
               />
@@ -86,7 +100,9 @@ export default function FilterDashboard({
         </AlertDialogContent>
       </AlertDialog>
 
-      <ActiveFilter onRemove={onRemove}>{activeFilters}</ActiveFilter>
+      <ActiveFilter onRemove={onRemove} onClear={onClear}>
+        {activeFilters}
+      </ActiveFilter>
     </>
   )
 }
