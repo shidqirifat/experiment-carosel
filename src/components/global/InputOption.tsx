@@ -5,28 +5,30 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../../ui/select'
+} from '../ui/select'
 
 export type Option = {
   label: string
   value?: string
 }
 
-type FilterItemType = {
-  label: string
+type InputOptionType = {
+  label?: string
   placeholder?: string
   options?: Option[]
   value?: string
+  className?: string
   onChange: (value?: Option) => void
 }
 
-export default function FilterItem({
+export default function InputOption({
   label,
   placeholder = 'Select an option',
   options,
   value,
   onChange,
-}: FilterItemType) {
+  className,
+}: InputOptionType) {
   const handleChange = (selectedValue: string): void => {
     const selected = options?.find((option) => option.value === selectedValue)
     onChange(selected)
@@ -34,8 +36,10 @@ export default function FilterItem({
 
   return (
     <Select onValueChange={(value) => handleChange(value)} value={value}>
-      <div>
-        <h3 className="text-black font-medium text-base mb-1">{label}</h3>
+      <div className={className}>
+        {label && (
+          <h3 className="text-black font-medium text-base mb-1">{label}</h3>
+        )}
         <SelectTrigger>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

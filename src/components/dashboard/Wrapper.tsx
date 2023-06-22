@@ -6,9 +6,12 @@ import { useQuery } from '@tanstack/react-query'
 import { useDebouncedState } from '@mantine/hooks'
 import { getProducts } from '../../services/product'
 import Input from '../ui/input'
+import InputOption from '../global/InputOption'
+import { rows } from './table/data'
 
 export default function Wrapper() {
   const [filter, setFilter] = useState<Filters>(initialFilter)
+  const [row, setRow] = useState('10')
   const [keyword, setKeyword] = useDebouncedState('', 500)
 
   const { data: products, isLoading } = useQuery({
@@ -16,6 +19,7 @@ export default function Wrapper() {
       'table',
       {
         title: keyword,
+        limit: row,
         category: filter.category.value,
         rangePrice: filter.rangePrice.value,
       },
@@ -32,7 +36,6 @@ export default function Wrapper() {
 
   const handleSave = (filtered: Filters): void => setFilter(filtered)
 
-  // BUAT FILTER BY TITLE SEARCH
   // BUAT PAGINATION
   // BUAT DISPLAY ROW PER PAGE
   return (
@@ -53,6 +56,16 @@ export default function Wrapper() {
         />
       </div>
       <TableWrapper products={products || []} isLoading={isLoading} />
+      <div className="flex items-center gap-3 mb-12">
+        <h3>Show</h3>
+        <InputOption
+          options={rows}
+          value={row}
+          onChange={(selected) => setRow(selected?.value || '10')}
+          className="w-20"
+        />
+        <h3>per page</h3>
+      </div>
     </div>
   )
 }

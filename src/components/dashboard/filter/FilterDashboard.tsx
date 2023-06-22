@@ -10,7 +10,6 @@ import {
   AlertDialogTrigger,
 } from '../../ui/alert-dialog'
 import { Button } from '../../ui/button'
-import FilterItem, { Option } from './FilterItem'
 import {
   ActiveFilterItem,
   Filter,
@@ -21,6 +20,7 @@ import {
 import ActiveFilter from './ActiveFilter'
 import { useQuery } from '@tanstack/react-query'
 import { getCategories } from '../../../services/category'
+import InputOption, { Option } from '../../global/InputOption'
 
 export default function FilterDashboard({
   initialFilter,
@@ -75,14 +75,14 @@ export default function FilterDashboard({
           <AlertDialogHeader>
             <AlertDialogTitle className="mb-4">Filter</AlertDialogTitle>
             <div className="flex flex-col gap-6 mt-0">
-              <FilterItem
+              <InputOption
                 label="Category"
                 placeholder="Select the category"
                 options={categories || []}
                 value={filter.category.value}
                 onChange={(selected) => handleChange('category', selected)}
               />
-              <FilterItem
+              <InputOption
                 label="Range of Price"
                 placeholder="Select the range of price"
                 options={rangePrice}

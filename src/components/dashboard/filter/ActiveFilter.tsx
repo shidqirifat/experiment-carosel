@@ -55,7 +55,7 @@ export default function ActiveFilter({
   if (children.length === 0) return <div className="my-4" />
 
   return (
-    <div className="my-4">
+    <div>
       {children.map((filter) => (
         <ButtonRemove key={filter.field} onRemove={onRemove}>
           {filter}

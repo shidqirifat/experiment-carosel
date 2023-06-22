@@ -1,4 +1,4 @@
-import { Option } from './FilterItem'
+import { Option } from '../../global/InputOption'
 
 export type Filters = {
   category: Option

@@ -39,11 +39,11 @@ const EmptyRow = ({ children }: EmptyRowProps) => {
 
 export default function TableWrapper({ products, isLoading }: TableProps) {
   return (
-    <Table className="mb-8">
-      <TableHeader>
+    <Table classNameWrapper="h-[600px] mb-6">
+      <TableHeader className="sticky top-0 bg-white">
         <TableRow>
           {tableHeaders.map((header) => (
-            <TableHead key={header.name} className={header.className || ''}>
+            <TableHead key={header.name} className={header.className}>
               {header.name}
             </TableHead>
           ))}
