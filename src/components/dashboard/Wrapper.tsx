@@ -11,7 +11,7 @@ export default function Wrapper() {
   const [filter, setFilter] = useState<Filters>(initialFilter)
   const [keyword, setKeyword] = useDebouncedState('', 500)
 
-  const { data: products } = useQuery({
+  const { data: products, isLoading } = useQuery({
     queryKey: [
       'table',
       {
@@ -52,7 +52,7 @@ export default function Wrapper() {
           onClear={handleClear}
         />
       </div>
-      <TableWrapper products={products || []} />
+      <TableWrapper products={products || []} isLoading={isLoading} />
     </div>
   )
 }
