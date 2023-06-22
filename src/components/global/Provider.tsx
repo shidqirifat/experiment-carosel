@@ -19,3 +19,5 @@ export default function Provider({ children }: Provider) {
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
 }
+
+export { queryClient }
