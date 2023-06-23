@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { ChangeEvent, useCallback, useRef, useState } from 'react'
 import FilterDashboard from './filter/FilterDashboard'
 import TableWrapper from './table/TableWrapper'
 import { Filter, Filters, initialFilter } from './filter/type'
@@ -17,14 +17,13 @@ export default function Wrapper() {
   const [page, setPage] = useState(1)
   const refKeyword = useRef<HTMLInputElement>(null)
 
-  const waitForKeywordChanged = (): boolean => {
-    console.log('run')
-    if (page === 1 && refKeyword.current?.value) {
+  const waitForKeywordChanged = useCallback((): boolean => {
+    if (page === 1 && refKeyword.current?.value !== '') {
       return keyword !== ''
     }
 
     return true
-  }
+  }, [page, keyword, refKeyword.current?.value])
 
   const { data: products, isLoading } = useQuery({
     queryKey: [
@@ -42,24 +41,31 @@ export default function Wrapper() {
     enabled: waitForKeywordChanged(),
   })
 
+  const resetPage = () => setPage(1)
+
   const handleRemove = (field: Filter): void => {
-    setPage(1)
+    resetPage()
     setFilter((prev) => ({ ...prev, [field]: { label: '', value: undefined } }))
   }
 
   const handleClear = () => {
-    setPage(1)
+    resetPage()
     setFilter(initialFilter)
   }
 
   const handleSave = (filtered: Filters): void => {
-    setPage(1)
+    resetPage()
     setFilter(filtered)
   }
 
   const handleChangeRow = (selected?: Option) => {
-    setPage(1)
+    resetPage()
     setRow(selected?.value || '10')
+  }
+
+  const handleTypeKeyword = (e: ChangeEvent<HTMLInputElement>) => {
+    resetPage()
+    setKeyword(e.currentTarget.value)
   }
 
   return (
@@ -71,10 +77,7 @@ export default function Wrapper() {
           placeholder="Search by title"
           className="mb-4 w-80"
           defaultValue={keyword}
-          onChange={(e) => {
-            setPage(1)
-            setKeyword(e.currentTarget.value)
-          }}
+          onChange={handleTypeKeyword}
         />
         <FilterDashboard
           initialFilter={filter}

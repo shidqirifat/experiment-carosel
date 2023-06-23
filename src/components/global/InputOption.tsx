@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import {
   Select,
   SelectContent,
@@ -29,10 +30,13 @@ export default function InputOption({
   onChange,
   className,
 }: InputOptionType) {
-  const handleChange = (selectedValue: string): void => {
-    const selected = options?.find((option) => option.value === selectedValue)
-    onChange(selected)
-  }
+  const handleChange = useCallback(
+    (selectedValue: string): void => {
+      const selected = options?.find((option) => option.value === selectedValue)
+      onChange(selected)
+    },
+    [options]
+  )
 
   return (
     <Select onValueChange={(value) => handleChange(value)} value={value}>
