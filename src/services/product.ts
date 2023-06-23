@@ -18,6 +18,7 @@ type FilterKey = {
   rangePrice?: string
   title?: string
   limit: string
+  offset: number
 }
 
 type ProductKey = {
@@ -41,6 +42,7 @@ const getFilterFromKey = (keys?: FilterKey) => {
       title: keys.title,
       category: keys.category,
       limit: keys.limit,
+      offset: keys.offset,
       ...getMinAndMaxRangePrice(keys.rangePrice),
     }
   }
@@ -49,17 +51,17 @@ const getFilterFromKey = (keys?: FilterKey) => {
     title: undefined,
     category: undefined,
     limit: '6',
+    offset: 0,
     ...getMinAndMaxRangePrice(''),
   }
 }
 
 const getProducts = async ({ queryKey }: ProductKey): Promise<Product[]> => {
-  const { title, category, limit, price_min, price_max } = getFilterFromKey(
-    queryKey[1]
-  )
+  const { title, category, offset, limit, price_min, price_max } =
+    getFilterFromKey(queryKey[1])
   const product = await api.get('/products', {
-    offset: 0,
     limit,
+    offset,
     title,
     categoryId: category,
     price_min,
