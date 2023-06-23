@@ -18,7 +18,7 @@ export default function Wrapper() {
   const refKeyword = useRef<HTMLInputElement>(null)
 
   const waitForKeywordChanged = useCallback((): boolean => {
-    if (page === 1 && refKeyword.current?.value !== '') {
+    if (page === 1 && refKeyword.current?.value) {
       return keyword !== ''
     }
 

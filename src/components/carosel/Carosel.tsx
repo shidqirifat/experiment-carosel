@@ -40,6 +40,7 @@ export default function Carosel({ products }: ProductCaroselProps) {
         scrollbar={{ draggable: true, hide: true }}
         onAfterInit={(swiper) => initialSwiper(swiper)}
         onSlideChange={(swiper) => handleSlide(swiper)}
+        grabCursor={true}
       >
         {products.length === 0
           ? fakeArray(4).map((item) => (
