@@ -77,14 +77,12 @@ export default function Wrapper() {
           defaultValue={keyword}
           onChange={handleTypeKeyword}
         />
-        {/* <div className="flex gap-4"> */}
         <FilterDashboard
           initialFilter={filter}
           onSave={handleSave}
           onRemove={handleRemove}
           onClear={handleClear}
         />
-        {/* </div> */}
       </div>
       <TableWrapper products={products || []} isLoading={isLoading} />
       <div className="mb-12 flex justify-between items-center">

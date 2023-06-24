@@ -1,4 +1,4 @@
-import { Product } from '../../../services/product'
+import Skeleton from 'react-loading-skeleton'
 import ProgressiveImage from '../../global/ProgressiveImage'
 import {
   Table,
@@ -8,24 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from '../../ui/table'
-
-type TableProps = {
-  products: Product[]
-  isLoading: boolean
-}
-
-type EmptyRowProps = { children: string }
-
-const tableHeaders = [
-  {
-    name: 'Image',
-    className: 'w-[100px]',
-  },
-  { name: 'Name' },
-  { name: 'Category' },
-  { name: 'Price' },
-  { name: 'Description' },
-]
+import { fakeArray } from '../../../utils/array'
+import {
+  EmptyRowProps,
+  SkeletonRowType,
+  TableProps,
+  skeletons,
+  tableHeaders,
+} from './data'
 
 const EmptyRow = ({ children }: EmptyRowProps) => {
   return (
@@ -34,6 +24,16 @@ const EmptyRow = ({ children }: EmptyRowProps) => {
         {children}
       </TableCell>
     </TableRow>
+  )
+}
+
+const SkeletonRow = ({ className, count = 1 }: SkeletonRowType) => {
+  return (
+    <TableCell>
+      {fakeArray(count).map((item) => (
+        <Skeleton key={item} className={className} />
+      ))}
+    </TableCell>
   )
 }
 
@@ -51,7 +51,17 @@ export default function TableWrapper({ products, isLoading }: TableProps) {
       </TableHeader>
       <TableBody>
         {isLoading ? (
-          <EmptyRow>Loading...</EmptyRow>
+          fakeArray(8).map((item) => (
+            <TableRow key={item}>
+              {skeletons.map((skeleton) => (
+                <SkeletonRow
+                  key={skeleton.className}
+                  className={skeleton.className}
+                  count={skeleton.count}
+                />
+              ))}
+            </TableRow>
+          ))
         ) : products.length === 0 ? (
           <EmptyRow>There is no product</EmptyRow>
         ) : (
