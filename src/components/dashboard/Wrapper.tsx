@@ -70,12 +70,12 @@ export default function Wrapper() {
 
   return (
     <div className="px-12 mt-12">
-      <div className="flex gap-4">
+      <div className="flex gap-4 mb-4">
         <Input
           ref={refKeyword}
           type="text"
           placeholder="Search by title"
-          className="mb-4 w-80"
+          className="w-80"
           defaultValue={keyword}
           onChange={handleTypeKeyword}
         />

@@ -1,3 +1,4 @@
+import { RangeValueArr } from '../components/dashboard/filter/type'
 import api from './api'
 
 export type Product = {
@@ -15,7 +16,7 @@ export type Product = {
 
 type FilterKey = {
   category?: string
-  rangePrice?: string
+  rangePrice?: RangeValueArr
   title?: string
   limit: string
   offset: number
@@ -25,15 +26,15 @@ type ProductKey = {
   queryKey: [string, FilterKey?]
 }
 
-type RangePrice = { price_min?: string; price_max?: string }
+type RangePriceResult = { price_min: number; price_max: number }
 
-const getMinAndMaxRangePrice = (rangePrice = ''): RangePrice => {
-  if (rangePrice === '') {
-    return { price_min: undefined, price_max: undefined }
-  }
+const defaultRange: RangeValueArr = [0, 2000]
 
-  const priceArr = rangePrice.split(' ')
-  return { price_min: priceArr[0], price_max: priceArr[2] }
+const getMinAndMaxRangePrice = (
+  rangePrice = defaultRange
+): RangePriceResult => {
+  const [price_min, price_max] = rangePrice
+  return { price_min, price_max }
 }
 
 const getFilterFromKey = (keys?: FilterKey) => {
@@ -52,7 +53,7 @@ const getFilterFromKey = (keys?: FilterKey) => {
     category: undefined,
     limit: '6',
     offset: 0,
-    ...getMinAndMaxRangePrice(''),
+    ...getMinAndMaxRangePrice(),
   }
 }
 

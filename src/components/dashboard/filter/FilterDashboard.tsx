@@ -14,6 +14,8 @@ import {
   ActiveFilterItem,
   Filter,
   FilterDashboardProps,
+  FilterRangeType,
+  RangeValueArr,
   rangePrice,
   resetFilter,
 } from './type'
@@ -21,6 +23,29 @@ import ActiveFilter from './ActiveFilter'
 import { useQuery } from '@tanstack/react-query'
 import { getCategories } from '../../../services/category'
 import InputOption, { Option } from '../../global/InputOption'
+import { RangeSlider } from '@mantine/core'
+
+const FilterRange = ({
+  label,
+  value,
+  marks,
+  onChange,
+  step = 100,
+  max = 2000,
+}: FilterRangeType) => {
+  return (
+    <div className="mb-8">
+      <h3 className="text-black font-medium text-base mb-2">{label}</h3>
+      <RangeSlider
+        value={value}
+        marks={marks}
+        step={step}
+        max={max}
+        onChange={onChange}
+      />
+    </div>
+  )
+}
 
 export default function FilterDashboard({
   initialFilter,
@@ -45,6 +70,17 @@ export default function FilterDashboard({
 
   const handleChange = (field: Filter, selected?: Option): void => {
     setFilter((prev) => ({ ...prev, [field]: selected }))
+  }
+
+  const handleChangeRange = (value: RangeValueArr): void => {
+    const range = `${value[0].toString()} - ${value[1].toString()}`
+    setFilter((prev) => ({
+      ...prev,
+      rangePrice: {
+        label: range,
+        value,
+      },
+    }))
   }
 
   const activeFilters = useMemo((): ActiveFilterItem[] => {
@@ -82,12 +118,11 @@ export default function FilterDashboard({
                 value={filter.category.value}
                 onChange={(selected) => handleChange('category', selected)}
               />
-              <InputOption
+              <FilterRange
                 label="Range of Price"
-                placeholder="Select the range of price"
-                options={rangePrice}
                 value={filter.rangePrice.value}
-                onChange={(selected) => handleChange('rangePrice', selected)}
+                marks={rangePrice}
+                onChange={handleChangeRange}
               />
             </div>
           </AlertDialogHeader>

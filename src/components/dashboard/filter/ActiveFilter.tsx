@@ -1,20 +1,10 @@
 import React from 'react'
-import { ActiveFilterItem, Filter } from './type'
-
-type ClearType = { onClear: () => void }
-
-type RemoveType = { onRemove: () => void }
-
-type ButtonRemoveType = {
-  children: ActiveFilterItem
-  onRemove: (field: Filter) => void
-}
-
-type ActiveFilterType = {
-  children: ActiveFilterItem[]
-  onRemove: (field: Filter) => void
-  onClear: () => void
-}
+import {
+  ActiveFilterType,
+  ButtonRemoveType,
+  ClearType,
+  RemoveType,
+} from './type'
 
 const Remove = ({ onRemove }: RemoveType) => {
   return (
@@ -29,9 +19,9 @@ const Remove = ({ onRemove }: RemoveType) => {
 
 const ButtonRemove = ({ children, onRemove }: ButtonRemoveType) => {
   return (
-    <div className="px-4 py-1 rounded-2xl border border-black bg-gray-inactive w-max relative inline-block mr-3">
+    <div className="px-4 py-1 h-10 rounded-2xl border border-black bg-gray-inactive w-max relative inline-flex items-center mr-3">
       <Remove onRemove={() => onRemove(children.field)} />
-      {children.label}
+      <h3>{children.label}</h3>
     </div>
   )
 }
@@ -40,7 +30,7 @@ const ButtonReset = ({ onClear }: ClearType) => {
   return (
     <button
       onClick={onClear}
-      className="px-4 py-1 rounded-2xl border border-black bg-black hover:bg-black/90 transition text-white w-max relative inline-block"
+      className="px-4 py-1 rounded-2xl border border-black bg-black hover:bg-black/90 transition text-white w-max relative inline-flex items-center h-10"
     >
       Clear Filter
     </button>

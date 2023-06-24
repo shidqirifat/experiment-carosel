@@ -1,8 +1,30 @@
 import { Option } from '../../global/InputOption'
 
+export type ClearType = { onClear: () => void }
+
+export type RemoveType = { onRemove: () => void }
+
+export type ButtonRemoveType = {
+  children: ActiveFilterItem
+  onRemove: (field: Filter) => void
+}
+
+export type ActiveFilterType = {
+  children: ActiveFilterItem[]
+  onRemove: (field: Filter) => void
+  onClear: () => void
+}
+
+export type RangeValueArr = [number, number]
+
+export type Range = {
+  label: string
+  value: RangeValueArr
+}
+
 export type Filters = {
   category: Option
-  rangePrice: Option
+  rangePrice: Range
 }
 
 export type ActiveFilterItem = {
@@ -19,9 +41,18 @@ export type FilterDashboardProps = {
   onClear: () => void
 }
 
-const initialFilter = {
+export type FilterRangeType = {
+  label: string
+  value: RangeValueArr
+  marks: { value: number; label: string }[]
+  onChange: (value: RangeValueArr) => void
+  step?: number
+  max?: number
+}
+
+const initialFilter: Filters = {
   category: { label: '', value: undefined },
-  rangePrice: { label: '', value: undefined },
+  rangePrice: { label: '0 - 2000', value: [0, 2000] },
 }
 
 const resetFilter = () => initialFilter
@@ -42,18 +73,11 @@ const categories = [
 ]
 
 const rangePrice = [
-  {
-    label: '0 - 99',
-    value: '0 - 99',
-  },
-  {
-    label: '100 - 999',
-    value: '100 - 999',
-  },
-  {
-    label: '1000 - 10000',
-    value: '1000 - 10000',
-  },
+  { value: 0, label: '0' },
+  { value: 500, label: '500' },
+  { value: 1000, label: '1000' },
+  { value: 1500, label: '1500' },
+  { value: 2000, label: '2000' },
 ]
 
 export { categories, rangePrice, initialFilter, resetFilter }
