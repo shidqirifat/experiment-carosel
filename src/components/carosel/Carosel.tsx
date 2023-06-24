@@ -8,7 +8,6 @@ import { Product } from '../../services/product'
 import SkeletonCard from './SkeletonCard'
 import { fakeArray } from '../../utils/array'
 import CaroselCard from './CaroselCard'
-import { useCallback } from 'react'
 
 type ProductCaroselProps = { products: Product[] }
 
@@ -20,15 +19,12 @@ const breakpoints = {
 export default function Carosel({ products }: ProductCaroselProps) {
   const { setSwiper, updateActiveSlide } = useSwiper()
 
-  const initialSwiper = useCallback(
-    (swiper: any): void => setSwiper(swiper),
-    []
-  )
+  const initialSwiper = (swiper: any) => setSwiper(swiper)
 
-  const handleSlide = useCallback((swiper: any): void => {
+  const handleSlide = (swiper: any) => {
     const { isBeginning, isEnd } = swiper
     updateActiveSlide({ isBeginning, isEnd })
-  }, [])
+  }
 
   return (
     <div>

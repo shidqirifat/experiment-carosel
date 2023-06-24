@@ -1,9 +1,8 @@
-import { useMemo } from 'react'
 import { useSwiper } from '../../store/swiper'
 
 type TypeButtonSlide = { type: 'next' | 'prev' }
 
-const generateStyle = (isDisabled: boolean): string => {
+const generateStyle = (isDisabled: boolean) => {
   const active = 'bg-gray-active text-black'
   const inactive = 'bg-gray-inactive text-gray-active'
 
@@ -13,22 +12,16 @@ const generateStyle = (isDisabled: boolean): string => {
 export default function ButtonSlide({ type }: TypeButtonSlide) {
   const { swiper, isBeginning, isEnd } = useSwiper()
 
-  const nextSlide = (): void => swiper.slideNext()
-  const prevSlide = (): void => swiper.slidePrev()
+  const nextSlide = () => swiper.slideNext()
+  const prevSlide = () => swiper.slidePrev()
 
-  const isDisabled = useMemo((): boolean => {
-    if (type === 'next') return isEnd
-
-    return isBeginning
-  }, [isBeginning, isEnd, type])
-
-  const style = useMemo((): string => generateStyle(isDisabled), [isDisabled])
+  const isDisabled = type === 'next' ? isEnd : isBeginning
 
   return (
     <button
       disabled={isDisabled}
       onClick={type === 'next' ? nextSlide : prevSlide}
-      className={style}
+      className={generateStyle(isDisabled)}
     >
       {type === 'next' ? '>' : '<'}
     </button>

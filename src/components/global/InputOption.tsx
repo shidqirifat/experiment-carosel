@@ -31,7 +31,7 @@ export default function InputOption({
   className,
 }: InputOptionType) {
   const handleChange = useCallback(
-    (selectedValue: string): void => {
+    (selectedValue: string) => {
       const selected = options?.find((option) => option.value === selectedValue)
       onChange(selected)
     },

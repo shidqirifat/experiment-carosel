@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useRef, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 import FilterDashboard from './filter/FilterDashboard'
 import TableWrapper from './table/TableWrapper'
 import { Filter, Filters, initialFilter } from './filter/type'
@@ -17,13 +17,11 @@ export default function Wrapper() {
   const [page, setPage] = useState(1)
   const refKeyword = useRef<HTMLInputElement>(null)
 
-  const waitForKeywordChanged = useCallback((): boolean => {
-    if (page === 1 && refKeyword.current?.value) {
-      return keyword !== ''
-    }
+  const waitForKeywordChanged = () => {
+    if (page === 1 && refKeyword.current?.value) return keyword !== ''
 
     return true
-  }, [page, keyword, refKeyword.current?.value])
+  }
 
   const { data: products, isLoading } = useQuery({
     queryKey: [
@@ -43,7 +41,7 @@ export default function Wrapper() {
 
   const resetPage = () => setPage(1)
 
-  const handleRemove = (field: Filter): void => {
+  const handleRemove = (field: Filter) => {
     resetPage()
     setFilter((prev) => ({ ...prev, [field]: { label: '', value: undefined } }))
   }
@@ -53,7 +51,7 @@ export default function Wrapper() {
     setFilter(initialFilter)
   }
 
-  const handleSave = (filtered: Filters): void => {
+  const handleSave = (filtered: Filters) => {
     resetPage()
     setFilter(filtered)
   }

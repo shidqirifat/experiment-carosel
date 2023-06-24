@@ -16,6 +16,7 @@ import {
   FilterDashboardProps,
   FilterRangeType,
   RangeValueArr,
+  defaultRangePrice,
   rangePrice,
   resetFilter,
 } from './type'
@@ -24,6 +25,8 @@ import { useQuery } from '@tanstack/react-query'
 import { getCategories } from '../../../services/category'
 import InputOption, { Option } from '../../global/InputOption'
 import { RangeSlider } from '@mantine/core'
+
+const arrToString = (arr: RangeValueArr) => arr.sort().join(',')
 
 const FilterRange = ({
   label,
@@ -68,11 +71,11 @@ export default function FilterDashboard({
     },
   })
 
-  const handleChange = (field: Filter, selected?: Option): void => {
+  const handleChange = (field: Filter, selected?: Option) => {
     setFilter((prev) => ({ ...prev, [field]: selected }))
   }
 
-  const handleChangeRange = (value: RangeValueArr): void => {
+  const handleChangeRange = (value: RangeValueArr) => {
     const range = `${value[0].toString()} - ${value[1].toString()}`
     setFilter((prev) => ({
       ...prev,
@@ -88,7 +91,13 @@ export default function FilterDashboard({
 
     const filters = []
     for (item in initialFilter) {
-      if (!initialFilter[item].value) continue
+      const value = initialFilter[item]?.value
+      if (!value) continue
+      if (Array.isArray(value)) {
+        const valueString = arrToString(value)
+        const defaultValueString = arrToString(defaultRangePrice)
+        if (valueString === defaultValueString) continue
+      }
 
       filters.push({ field: item, label: initialFilter[item].label })
     }
@@ -120,7 +129,7 @@ export default function FilterDashboard({
               />
               <FilterRange
                 label="Range of Price"
-                value={filter.rangePrice.value}
+                value={filter.rangePrice.value.sort((a, b) => a - b)}
                 marks={rangePrice}
                 onChange={handleChangeRange}
               />

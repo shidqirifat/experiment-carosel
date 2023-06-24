@@ -50,9 +50,11 @@ export type FilterRangeType = {
   max?: number
 }
 
+const defaultRangePrice: RangeValueArr = [0, 2000]
+
 const initialFilter: Filters = {
   category: { label: '', value: undefined },
-  rangePrice: { label: '0 - 2000', value: [0, 2000] },
+  rangePrice: { label: '0 - 2000', value: defaultRangePrice },
 }
 
 const resetFilter = () => initialFilter
@@ -80,4 +82,4 @@ const rangePrice = [
   { value: 2000, label: '2000' },
 ]
 
-export { categories, rangePrice, initialFilter, resetFilter }
+export { categories, rangePrice, initialFilter, resetFilter, defaultRangePrice }
