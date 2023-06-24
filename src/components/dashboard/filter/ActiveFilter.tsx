@@ -19,7 +19,7 @@ const Remove = ({ onRemove }: RemoveType) => {
 
 const ButtonRemove = ({ children, onRemove }: ButtonRemoveType) => {
   return (
-    <div className="px-4 py-1 h-10 rounded-2xl border border-black bg-gray-inactive w-max relative inline-flex items-center mr-3">
+    <div className="px-4 py-1 h-10 rounded-2xl border border-black bg-gray-inactive w-max relative inline-flex items-center mr-3 mb-3 md:mb-0">
       <Remove onRemove={() => onRemove(children.field)} />
       <h3>{children.label}</h3>
     </div>
@@ -42,7 +42,7 @@ export default function ActiveFilter({
   onRemove,
   onClear,
 }: ActiveFilterType) {
-  if (children.length === 0) return <div className="my-4" />
+  if (children.length === 0) return <div className="hidden md:block md:my-4" />
 
   return (
     <div>

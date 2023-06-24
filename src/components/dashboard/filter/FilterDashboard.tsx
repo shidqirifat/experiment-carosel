@@ -25,6 +25,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getCategories } from '../../../services/category'
 import InputOption, { Option } from '../../global/InputOption'
 import { RangeSlider } from '@mantine/core'
+import Label from '../../global/Label'
 
 const arrToString = (arr: RangeValueArr) => arr.sort().join(',')
 
@@ -38,7 +39,7 @@ const FilterRange = ({
 }: FilterRangeType) => {
   return (
     <div className="mb-8">
-      <h3 className="text-black font-medium text-base mb-2">{label}</h3>
+      <Label className="mb-8">{label}</Label>
       <RangeSlider
         value={value}
         marks={marks}

@@ -67,22 +67,24 @@ export default function Wrapper() {
   }
 
   return (
-    <div className="px-12 mt-12">
-      <div className="flex gap-4 mb-4">
+    <div className="px-6 md:px-12 mt-12">
+      <div className="flex flex-wrap md:flex-nowrap gap-4 mb-4">
         <Input
           ref={refKeyword}
           type="text"
           placeholder="Search by title"
-          className="w-80"
+          className="w-[calc(100%-84px)] md:w-80"
           defaultValue={keyword}
           onChange={handleTypeKeyword}
         />
+        {/* <div className="flex gap-4"> */}
         <FilterDashboard
           initialFilter={filter}
           onSave={handleSave}
           onRemove={handleRemove}
           onClear={handleClear}
         />
+        {/* </div> */}
       </div>
       <TableWrapper products={products || []} isLoading={isLoading} />
       <div className="mb-12 flex justify-between items-center">

@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select'
+import Label from './Label'
 
 export type Option = {
   label: string
@@ -41,9 +42,7 @@ export default function InputOption({
   return (
     <Select onValueChange={(value) => handleChange(value)} value={value}>
       <div className={className}>
-        {label && (
-          <h3 className="text-black font-medium text-base mb-1">{label}</h3>
-        )}
+        <Label>{label}</Label>
         <SelectTrigger>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

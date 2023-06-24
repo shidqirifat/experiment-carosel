@@ -33,6 +33,7 @@ const defaultRange: RangeValueArr = [0, 2000]
 const getMinAndMaxRangePrice = (
   rangePrice = defaultRange
 ): RangePriceResult => {
+  rangePrice.sort((a, b) => a - b)
   const [price_min, price_max] = rangePrice
   return { price_min, price_max }
 }
