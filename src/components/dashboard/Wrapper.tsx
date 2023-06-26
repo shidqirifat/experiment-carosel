@@ -3,47 +3,49 @@ import FilterDashboard from './filter/FilterDashboard'
 import TableWrapper from './table/TableWrapper'
 import { Filter, Filters, initialFilter } from './filter/type'
 import { useQuery } from '@tanstack/react-query'
-import { useDebouncedState } from '@mantine/hooks'
+import { useDebouncedState, useDidUpdate } from '@mantine/hooks'
 import { getProducts } from '../../services/product'
 import Input from '../ui/input'
 import InputOption, { Option } from '../global/InputOption'
 import { rows } from './table/data'
 import { Pagination } from '@mantine/core'
+import { useSearchParams } from 'react-router-dom'
+import {
+  generateDefaultFilter,
+  generateParamsFromFilter,
+  generateQueryKeys,
+  waitForKeywordChanged,
+} from './utils'
 
 export default function Wrapper() {
   const [filter, setFilter] = useState<Filters>(initialFilter)
   const [keyword, setKeyword] = useDebouncedState('', 500)
   const [row, setRow] = useState('10')
   const [page, setPage] = useState(1)
+  const [params, setParams] = useSearchParams()
   const refKeyword = useRef<HTMLInputElement>(null)
 
-  const waitForKeywordChanged = () => {
-    if (page === 1 && refKeyword.current?.value) return keyword !== ''
-
-    return true
+  const syncFiltersWithParams = () => {
+    const queries = generateParamsFromFilter({ keyword, page, filter, row })
+    setParams(queries)
   }
 
   const { data: products, isLoading } = useQuery({
-    queryKey: [
-      'table',
-      {
-        title: keyword,
-        offset: (page - 1) * Number(row),
-        limit: row,
-        category: filter.category.value,
-        rangePrice: filter.rangePrice.value,
-      },
-    ],
+    queryKey: ['table', generateQueryKeys({ keyword, page, filter, row })],
     queryFn: getProducts,
     refetchOnMount: false,
-    enabled: waitForKeywordChanged(),
+    enabled: waitForKeywordChanged({ page, keyword, refKeyword }),
+    onSuccess: syncFiltersWithParams,
   })
 
   const resetPage = () => setPage(1)
 
   const handleRemove = (field: Filter) => {
     resetPage()
-    setFilter((prev) => ({ ...prev, [field]: { label: '', value: undefined } }))
+    setFilter((prev) => ({
+      ...prev,
+      [field]: generateDefaultFilter(field),
+    }))
   }
 
   const handleClear = () => {
@@ -66,7 +68,10 @@ export default function Wrapper() {
     setKeyword(e.currentTarget.value)
   }
 
-  // SYNC FILTER WITH URL
+  useDidUpdate(() => {
+    console.log(params.get('page'))
+  }, [params])
+
   // INITIAL FILTER FROM CURRENT URL
   return (
     <div className="px-6 md:px-12 mt-12">

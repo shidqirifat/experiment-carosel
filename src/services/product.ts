@@ -42,7 +42,7 @@ const getFilterFromKey = (keys?: FilterKey) => {
   if (typeof keys === 'object') {
     return {
       title: keys.title,
-      category: keys.category,
+      categoryId: keys.category,
       limit: keys.limit,
       offset: keys.offset,
       ...getMinAndMaxRangePrice(keys.rangePrice),
@@ -51,7 +51,7 @@ const getFilterFromKey = (keys?: FilterKey) => {
 
   return {
     title: undefined,
-    category: undefined,
+    categoryId: undefined,
     limit: '6',
     offset: 0,
     ...getMinAndMaxRangePrice(),
@@ -59,16 +59,8 @@ const getFilterFromKey = (keys?: FilterKey) => {
 }
 
 const getProducts = async ({ queryKey }: ProductKey): Promise<Product[]> => {
-  const { title, category, offset, limit, price_min, price_max } =
-    getFilterFromKey(queryKey[1])
-  const product = await api.get('/products', {
-    limit,
-    offset,
-    title,
-    categoryId: category,
-    price_min,
-    price_max,
-  })
+  const query = getFilterFromKey(queryKey[1])
+  const product = await api.get('/products', query)
   return product
 }
 
