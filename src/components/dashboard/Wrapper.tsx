@@ -66,6 +66,8 @@ export default function Wrapper() {
     setKeyword(e.currentTarget.value)
   }
 
+  // SYNC FILTER WITH URL
+  // INITIAL FILTER FROM CURRENT URL
   return (
     <div className="px-6 md:px-12 mt-12">
       <div className="flex flex-wrap md:flex-nowrap gap-4 mb-4">

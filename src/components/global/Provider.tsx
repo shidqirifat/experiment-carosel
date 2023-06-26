@@ -1,8 +1,9 @@
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import { ReactNode } from 'react'
+import { RouterProvider } from 'react-router-dom'
+import { Router } from '@remix-run/router'
 
 export type Provider = {
-  children: ReactNode
+  children: Router
 }
 
 const queryClient = new QueryClient({
@@ -16,7 +17,9 @@ const queryClient = new QueryClient({
 
 export default function Provider({ children }: Provider) {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={children} />
+    </QueryClientProvider>
   )
 }
 
