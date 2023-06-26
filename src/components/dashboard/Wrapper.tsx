@@ -1,7 +1,7 @@
 import { ChangeEvent, useRef, useState } from 'react'
 import FilterDashboard from './filter/FilterDashboard'
 import TableWrapper from './table/TableWrapper'
-import { Filter, Filters, initialFilter } from './filter/type'
+import { Filter, Filters } from './filter/type'
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedState, useDidUpdate } from '@mantine/hooks'
 import { getProducts } from '../../services/product'
@@ -16,6 +16,7 @@ import {
   generateQueryKeys,
   waitForKeywordChanged,
 } from './utils'
+import { initialFilter } from './filter/utils'
 
 export default function Wrapper() {
   const [filter, setFilter] = useState<Filters>(initialFilter)

@@ -1,4 +1,5 @@
-import { Filter, Filters, defaultRangePrice } from './filter/type'
+import { Filter, Filters } from './filter/type'
+import { defaultRangePrice } from './filter/utils'
 
 type KeywordChangedType = {
   page: number

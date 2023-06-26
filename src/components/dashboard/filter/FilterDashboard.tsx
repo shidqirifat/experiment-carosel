@@ -16,9 +16,6 @@ import {
   FilterDashboardProps,
   FilterRangeType,
   RangeValueArr,
-  defaultRangePrice,
-  rangePrice,
-  resetFilter,
 } from './type'
 import ActiveFilter from './ActiveFilter'
 import { useQuery } from '@tanstack/react-query'
@@ -26,8 +23,13 @@ import { getCategories } from '../../../services/category'
 import InputOption, { Option } from '../../global/InputOption'
 import { RangeSlider } from '@mantine/core'
 import Label from '../../global/Label'
-
-const arrToString = (arr: RangeValueArr) => arr.sort().join(',')
+import {
+  generateActiveLabelRangePrice,
+  generateOptionCategories,
+  getActiveFilter,
+  rangePrice,
+  resetFilter,
+} from './utils'
 
 const FilterRange = ({
   label,
@@ -64,11 +66,7 @@ export default function FilterDashboard({
     queryKey: ['categories'],
     queryFn: async () => {
       const data = await getCategories()
-
-      return data.map((category) => ({
-        label: category.name,
-        value: category.id.toString(),
-      }))
+      return generateOptionCategories(data)
     },
   })
 
@@ -77,34 +75,19 @@ export default function FilterDashboard({
   }
 
   const handleChangeRange = (value: RangeValueArr) => {
-    const range = `${value[0].toString()} - ${value[1].toString()}`
     setFilter((prev) => ({
       ...prev,
       rangePrice: {
-        label: range,
+        label: generateActiveLabelRangePrice(value),
         value,
       },
     }))
   }
 
-  const activeFilters = useMemo((): ActiveFilterItem[] => {
-    let item: keyof typeof initialFilter
-
-    const filters = []
-    for (item in initialFilter) {
-      const value = initialFilter[item]?.value
-      if (!value) continue
-      if (Array.isArray(value)) {
-        const valueString = arrToString(value)
-        const defaultValueString = arrToString(defaultRangePrice)
-        if (valueString === defaultValueString) continue
-      }
-
-      filters.push({ field: item, label: initialFilter[item].label })
-    }
-
-    return filters
-  }, [initialFilter])
+  const activeFilters = useMemo(
+    (): ActiveFilterItem[] => getActiveFilter(initialFilter),
+    [initialFilter]
+  )
 
   useEffect(() => {
     if (isOpen) setFilter(initialFilter)
