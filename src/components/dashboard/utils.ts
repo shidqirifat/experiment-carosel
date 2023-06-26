@@ -14,6 +14,16 @@ type FilterType = {
   filter: Filters
 }
 
+export type QueriesUrl = {
+  category_id: string
+  category_label: string
+  price_min: string
+  price_max: string
+  row: string
+  page: string
+  keyword: string
+}
+
 const generateDefaultFilter = (field: Filter) => {
   if (field === 'category') return { label: '', value: undefined }
 
@@ -38,7 +48,7 @@ const generateQueryKeys = ({ keyword, page, row, filter }: FilterType) => {
     title: keyword,
     offset: (page - 1) * Number(row),
     limit: row,
-    category: filter.category.value,
+    category: filter.category.value || '',
     rangePrice: filter.rangePrice.value,
   }
 }
@@ -49,7 +59,7 @@ const generateParamsFromFilter = ({
   row,
   filter,
 }: FilterType) => {
-  const queries = {
+  const queries: QueriesUrl = {
     category_id: filter.category.value || '',
     category_label: filter.category.label,
     price_min: filter.rangePrice.value[0].toString(),

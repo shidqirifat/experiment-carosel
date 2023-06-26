@@ -1,9 +1,9 @@
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import FilterDashboard from './filter/FilterDashboard'
 import TableWrapper from './table/TableWrapper'
-import { Filter, Filters } from './filter/type'
+import { Filter, Filters, RangeValueArr } from './filter/type'
 import { useQuery } from '@tanstack/react-query'
-import { useDebouncedState, useDidUpdate } from '@mantine/hooks'
+import { useDebouncedState } from '@mantine/hooks'
 import { getProducts } from '../../services/product'
 import Input from '../ui/input'
 import InputOption, { Option } from '../global/InputOption'
@@ -16,7 +16,8 @@ import {
   generateQueryKeys,
   waitForKeywordChanged,
 } from './utils'
-import { initialFilter } from './filter/utils'
+import { generateActiveLabelRangePrice, initialFilter } from './filter/utils'
+import { queryUrlToObject } from '../../utils/url'
 
 export default function Wrapper() {
   const [filter, setFilter] = useState<Filters>(initialFilter)
@@ -69,11 +70,32 @@ export default function Wrapper() {
     setKeyword(e.currentTarget.value)
   }
 
-  useDidUpdate(() => {
-    console.log(params.get('page'))
-  }, [params])
+  useEffect(() => {
+    const queryObject = queryUrlToObject(params.toString())
+    if (Object.keys(queryObject).length === 0) return
 
-  // INITIAL FILTER FROM CURRENT URL
+    const rangePrice: RangeValueArr = [
+      Number(queryObject.price_min),
+      Number(queryObject.price_max),
+    ]
+
+    setFilter({
+      category: {
+        label: queryObject.category_label || '',
+        value: queryObject.category_id || undefined,
+      },
+      rangePrice: {
+        label: generateActiveLabelRangePrice(rangePrice),
+        value: rangePrice,
+      },
+    })
+
+    setRow(queryObject.row.toString())
+    setPage(Number(queryObject.page))
+    setKeyword(queryObject.keyword || '')
+    if (refKeyword.current) refKeyword.current.value = queryObject.keyword || ''
+  }, [])
+
   return (
     <div className="px-6 md:px-12 mt-12">
       <div className="flex flex-wrap md:flex-nowrap gap-4 mb-4">
