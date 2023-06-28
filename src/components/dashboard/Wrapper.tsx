@@ -18,6 +18,7 @@ import {
 } from './utils'
 import { generateActiveLabelRangePrice, initialFilter } from './filter/utils'
 import { queryUrlToObject } from '../../utils/url'
+import Container from '../global/Container'
 
 export default function Wrapper() {
   const [filter, setFilter] = useState<Filters>(initialFilter)
@@ -97,7 +98,7 @@ export default function Wrapper() {
   }, [])
 
   return (
-    <div className="px-6 md:px-12 mt-12">
+    <Container>
       <div className="flex flex-wrap md:flex-nowrap gap-4 mb-4">
         <Input
           ref={refKeyword}
@@ -128,6 +129,6 @@ export default function Wrapper() {
         </div>
         <Pagination total={10} siblings={1} value={page} onChange={setPage} />
       </div>
-    </div>
+    </Container>
   )
 }

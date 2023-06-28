@@ -39,7 +39,7 @@ const SkeletonRow = ({ className, count = 1 }: SkeletonRowType) => {
 
 export default function TableWrapper({ products, isLoading }: TableProps) {
   return (
-    <Table classNameWrapper="h-[600px] mb-6">
+    <Table classNameWrapper="max-h-[660px] h-auto mb-6">
       <TableHeader className="sticky top-0 bg-white">
         <TableRow>
           {tableHeaders.map((header) => (
@@ -73,7 +73,7 @@ export default function TableWrapper({ products, isLoading }: TableProps) {
               <TableCell className="font-medium">{product.title}</TableCell>
               <TableCell>{product.category.name}</TableCell>
               <TableCell>{product.price}</TableCell>
-              <TableCell>{product.description}</TableCell>
+              <TableCell className="max-w-md">{product.description}</TableCell>
             </TableRow>
           ))
         )}
