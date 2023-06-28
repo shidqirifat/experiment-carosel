@@ -7,7 +7,12 @@ import { useDebouncedState } from '@mantine/hooks'
 import { getProducts } from '../../services/product'
 import Input from '../ui/input'
 import InputOption, { Option } from '../global/InputOption'
-import { rows } from './table/data'
+import {
+  SortingActionType,
+  SortingNameType,
+  SortingType,
+  rows,
+} from './table/data'
 import { Pagination } from '@mantine/core'
 import { useSearchParams } from 'react-router-dom'
 import {
@@ -25,16 +30,26 @@ export default function Wrapper() {
   const [keyword, setKeyword] = useDebouncedState('', 500)
   const [row, setRow] = useState('10')
   const [page, setPage] = useState(1)
+  const [sort, setSort] = useState<SortingType>(['Name', 'ASC'])
   const [params, setParams] = useSearchParams()
   const refKeyword = useRef<HTMLInputElement>(null)
 
   const syncFiltersWithParams = () => {
-    const queries = generateParamsFromFilter({ keyword, page, filter, row })
+    const queries = generateParamsFromFilter({
+      keyword,
+      page,
+      filter,
+      row,
+      sort,
+    })
     setParams(queries)
   }
 
   const { data: products, isLoading } = useQuery({
-    queryKey: ['table', generateQueryKeys({ keyword, page, filter, row })],
+    queryKey: [
+      'table',
+      generateQueryKeys({ keyword, page, filter, row, sort }),
+    ],
     queryFn: getProducts,
     refetchOnMount: false,
     enabled: waitForKeywordChanged({ page, keyword, refKeyword }),
@@ -69,6 +84,13 @@ export default function Wrapper() {
   const handleTypeKeyword = (e: ChangeEvent<HTMLInputElement>) => {
     resetPage()
     setKeyword(e.currentTarget.value)
+  }
+
+  const handleSort = (
+    field: SortingNameType,
+    actionSort: SortingActionType
+  ) => {
+    setSort([field, actionSort])
   }
 
   useEffect(() => {
@@ -115,7 +137,12 @@ export default function Wrapper() {
           onClear={handleClear}
         />
       </div>
-      <TableWrapper products={products || []} isLoading={isLoading} />
+      <TableWrapper
+        products={products || []}
+        isLoading={isLoading}
+        sort={sort}
+        onSort={handleSort}
+      />
       <div className="mb-12 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <h3>Show</h3>
@@ -127,7 +154,13 @@ export default function Wrapper() {
           />
           <h3>per page</h3>
         </div>
-        <Pagination total={10} siblings={1} value={page} onChange={setPage} />
+        <Pagination
+          color="dark"
+          total={10}
+          siblings={1}
+          value={page}
+          onChange={setPage}
+        />
       </div>
     </Container>
   )

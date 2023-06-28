@@ -1,5 +1,6 @@
 import { Filter, Filters } from './filter/type'
 import { defaultRangePrice } from './filter/utils'
+import { SortingType } from './table/data'
 
 type KeywordChangedType = {
   page: number
@@ -12,6 +13,7 @@ type FilterType = {
   page: number
   row: string
   filter: Filters
+  sort: SortingType
 }
 
 export type QueriesUrl = {
@@ -22,6 +24,8 @@ export type QueriesUrl = {
   row: string
   page: string
   keyword: string
+  sort_field: string
+  sort_action: string
 }
 
 const generateDefaultFilter = (field: Filter) => {
@@ -43,13 +47,21 @@ const waitForKeywordChanged = ({
   return true
 }
 
-const generateQueryKeys = ({ keyword, page, row, filter }: FilterType) => {
+const generateQueryKeys = ({
+  keyword,
+  page,
+  row,
+  filter,
+  sort,
+}: FilterType) => {
   return {
     title: keyword,
     offset: (page - 1) * Number(row),
     limit: row,
     category: filter.category.value || '',
     rangePrice: filter.rangePrice.value,
+    sortField: sort[0].toLowerCase(),
+    sortAction: sort[1].toLowerCase(),
   }
 }
 
@@ -58,12 +70,15 @@ const generateParamsFromFilter = ({
   page,
   row,
   filter,
+  sort,
 }: FilterType) => {
   const queries: QueriesUrl = {
     category_id: filter.category.value || '',
     category_label: filter.category.label,
     price_min: filter.rangePrice.value[0].toString(),
     price_max: filter.rangePrice.value[1].toString(),
+    sort_field: sort[0].toLowerCase(),
+    sort_action: sort[1].toLowerCase(),
     row,
     page: page.toString(),
     keyword,

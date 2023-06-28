@@ -20,6 +20,8 @@ type FilterKey = {
   title?: string
   limit: string
   offset: number
+  sortField: string
+  sortAction: string
 }
 
 type ProductKey = {
@@ -45,6 +47,8 @@ const getFilterFromKey = (keys?: FilterKey) => {
       categoryId: keys.category,
       limit: keys.limit,
       offset: keys.offset,
+      sortField: keys.sortField,
+      sortAction: keys.sortAction,
       ...getMinAndMaxRangePrice(keys.rangePrice),
     }
   }
@@ -54,6 +58,8 @@ const getFilterFromKey = (keys?: FilterKey) => {
     categoryId: undefined,
     limit: '6',
     offset: 0,
+    sortField: 'name',
+    sortAction: 'asc',
     ...getMinAndMaxRangePrice(),
   }
 }

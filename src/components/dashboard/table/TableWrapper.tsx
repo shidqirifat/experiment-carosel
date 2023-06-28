@@ -1,4 +1,3 @@
-import Skeleton from 'react-loading-skeleton'
 import ProgressiveImage from '../../global/ProgressiveImage'
 import {
   Table,
@@ -9,42 +8,29 @@ import {
   TableRow,
 } from '../../ui/table'
 import { fakeArray } from '../../../utils/array'
-import {
-  EmptyRowProps,
-  SkeletonRowType,
-  TableProps,
-  skeletons,
-  tableHeaders,
-} from './data'
+import { TableProps, skeletons, tableHeaders } from './data'
+import { EmptyRow, HeaderSortItem, SkeletonRow } from './Table'
+import { toCurrency } from '../../../utils/currency'
 
-const EmptyRow = ({ children }: EmptyRowProps) => {
-  return (
-    <TableRow>
-      <TableCell colSpan={100} className="text-center py-12 text-base">
-        {children}
-      </TableCell>
-    </TableRow>
-  )
-}
-
-const SkeletonRow = ({ className, count = 1 }: SkeletonRowType) => {
-  return (
-    <TableCell>
-      {fakeArray(count).map((item) => (
-        <Skeleton key={item} className={className} />
-      ))}
-    </TableCell>
-  )
-}
-
-export default function TableWrapper({ products, isLoading }: TableProps) {
+export default function TableWrapper({
+  products,
+  isLoading,
+  sort,
+  onSort,
+}: TableProps) {
   return (
     <Table classNameWrapper="max-h-[660px] h-auto mb-6">
       <TableHeader className="sticky top-0 bg-white">
         <TableRow>
           {tableHeaders.map((header) => (
             <TableHead key={header.name} className={header.className}>
-              {header.name}
+              {header.isSorting ? (
+                <HeaderSortItem sort={sort} onSort={onSort}>
+                  {header.name}
+                </HeaderSortItem>
+              ) : (
+                header.name
+              )}
             </TableHead>
           ))}
         </TableRow>
@@ -72,7 +58,7 @@ export default function TableWrapper({ products, isLoading }: TableProps) {
               </TableCell>
               <TableCell className="font-medium">{product.title}</TableCell>
               <TableCell>{product.category.name}</TableCell>
-              <TableCell>{product.price}</TableCell>
+              <TableCell>{toCurrency(product.price)}</TableCell>
               <TableCell className="max-w-md">{product.description}</TableCell>
             </TableRow>
           ))

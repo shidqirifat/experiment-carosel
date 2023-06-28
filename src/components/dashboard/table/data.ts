@@ -1,6 +1,11 @@
 import { Product } from '../../../services/product'
 
-export type TableProps = {
+interface Sorting {
+  sort: SortingType
+  onSort: (field: SortingNameType, actionSort: SortingActionType) => void
+}
+
+export interface TableProps extends Sorting {
   products: Product[]
   isLoading: boolean
 }
@@ -23,14 +28,33 @@ const rows = [
   },
 ]
 
-const tableHeaders = [
+type TableHeaderProps = {
+  name: string
+  className?: string
+  isSorting?: boolean
+}
+
+export type IconSortProps = {
+  sort: SortingType
+  label: SortingNameType
+}
+
+export type SortingNameType = 'Name' | 'Price'
+export interface HeaderItemProps extends Sorting {
+  children: SortingNameType
+}
+
+export type SortingActionType = 'ASC' | 'DESC'
+export type SortingType = [SortingNameType, SortingActionType]
+
+const tableHeaders: Array<TableHeaderProps> = [
   {
     name: 'Image',
     className: 'w-[100px]',
   },
-  { name: 'Name' },
+  { name: 'Name', isSorting: true },
   { name: 'Category' },
-  { name: 'Price' },
+  { name: 'Price', isSorting: true },
   { name: 'Description' },
 ]
 
