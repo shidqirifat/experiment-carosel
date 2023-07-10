@@ -3,7 +3,7 @@ import FilterDashboard from './filter/FilterDashboard'
 import TableWrapper from './table/TableWrapper'
 import { Filter, Filters, RangeValueArr } from './filter/type'
 import { useQuery } from '@tanstack/react-query'
-import { useDebouncedState } from '@mantine/hooks'
+import { useDebouncedState, useDidUpdate } from '@mantine/hooks'
 import { getProducts } from '../../services/product'
 import Input from '../ui/input'
 import InputOption, { Option } from '../global/InputOption'
@@ -52,11 +52,7 @@ export default function Wrapper() {
     setParams(queries)
   }
 
-  const {
-    data: products,
-    isLoading,
-    fetchStatus,
-  } = useQuery({
+  const { data: products, isLoading } = useQuery({
     queryKey: [
       'table',
       generateQueryKeys({ keyword, page, filter, row, sort }),
@@ -65,11 +61,6 @@ export default function Wrapper() {
     refetchOnMount: false,
     enabled: ready,
   })
-
-  if (fetchStatus === 'idle') {
-    syncFiltersWithParams()
-    resetReady()
-  }
 
   const resetPage = () => setPage(1)
 
@@ -134,6 +125,11 @@ export default function Wrapper() {
     setKeyword(queryObject.keyword || '')
     if (refKeyword.current) refKeyword.current.value = queryObject.keyword || ''
   }, [])
+
+  useDidUpdate(() => {
+    syncFiltersWithParams()
+    resetReady()
+  }, [products])
 
   return (
     <Container>
