@@ -23,6 +23,7 @@ import {
 import { generateActiveLabelRangePrice, initialFilter } from './filter/utils'
 import { queryUrlToObject } from '../../utils/url'
 import Container from '../global/Container'
+import useReady from '../../hooks/useReady'
 
 export default function Wrapper() {
   const [filter, setFilter] = useState<Filters>(initialFilter)
@@ -32,17 +33,13 @@ export default function Wrapper() {
   const [sort, setSort] = useState<SortingType>(['Name', 'ASC'])
   const [params, setParams] = useSearchParams()
   const refKeyword = useRef<HTMLInputElement>(null)
-  const [ready, setReady] = useState(false)
-
-  useEffect(() => {
-    const delayReady = setTimeout(() => {
-      setReady(true)
-    }, 300)
-
-    return () => {
-      clearTimeout(delayReady)
-    }
-  }, [filter, keyword, row, page, sort])
+  const { ready, resetReady } = useReady(200, [
+    filter,
+    keyword,
+    row,
+    page,
+    sort,
+  ])
 
   const syncFiltersWithParams = () => {
     const queries = generateParamsFromFilter({
@@ -55,7 +52,11 @@ export default function Wrapper() {
     setParams(queries)
   }
 
-  const { data: products, isLoading } = useQuery({
+  const {
+    data: products,
+    isLoading,
+    fetchStatus,
+  } = useQuery({
     queryKey: [
       'table',
       generateQueryKeys({ keyword, page, filter, row, sort }),
@@ -63,11 +64,12 @@ export default function Wrapper() {
     queryFn: getProducts,
     refetchOnMount: false,
     enabled: ready,
-    onSuccess: () => {
-      syncFiltersWithParams()
-      setReady(false)
-    },
   })
+
+  if (fetchStatus === 'idle') {
+    syncFiltersWithParams()
+    resetReady()
+  }
 
   const resetPage = () => setPage(1)
 
