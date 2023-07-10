@@ -19,7 +19,6 @@ import {
   generateDefaultFilter,
   generateParamsFromFilter,
   generateQueryKeys,
-  waitForKeywordChanged,
 } from './utils'
 import { generateActiveLabelRangePrice, initialFilter } from './filter/utils'
 import { queryUrlToObject } from '../../utils/url'
@@ -27,12 +26,23 @@ import Container from '../global/Container'
 
 export default function Wrapper() {
   const [filter, setFilter] = useState<Filters>(initialFilter)
-  const [keyword, setKeyword] = useDebouncedState('', 500)
+  const [keyword, setKeyword] = useDebouncedState('', 200)
   const [row, setRow] = useState('10')
   const [page, setPage] = useState(1)
   const [sort, setSort] = useState<SortingType>(['Name', 'ASC'])
   const [params, setParams] = useSearchParams()
   const refKeyword = useRef<HTMLInputElement>(null)
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    const delayReady = setTimeout(() => {
+      setReady(true)
+    }, 300)
+
+    return () => {
+      clearTimeout(delayReady)
+    }
+  }, [filter, keyword, row, page, sort])
 
   const syncFiltersWithParams = () => {
     const queries = generateParamsFromFilter({
@@ -52,8 +62,11 @@ export default function Wrapper() {
     ],
     queryFn: getProducts,
     refetchOnMount: false,
-    enabled: waitForKeywordChanged({ page, keyword, refKeyword }),
-    onSuccess: syncFiltersWithParams,
+    enabled: ready,
+    onSuccess: () => {
+      syncFiltersWithParams()
+      setReady(false)
+    },
   })
 
   const resetPage = () => setPage(1)
@@ -90,6 +103,7 @@ export default function Wrapper() {
     field: SortingNameType,
     actionSort: SortingActionType
   ) => {
+    resetPage()
     setSort([field, actionSort])
   }
 

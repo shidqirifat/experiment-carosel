@@ -25,6 +25,7 @@ export default function TableWrapper({
           {tableHeaders.map((header) => (
             <TableHead key={header.name} className={header.className}>
               {header.isSorting ? (
+                // @ts-ignore
                 <HeaderSortItem sort={sort} onSort={onSort}>
                   {header.name}
                 </HeaderSortItem>

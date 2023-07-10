@@ -2,12 +2,6 @@ import { Filter, Filters } from './filter/type'
 import { defaultRangePrice } from './filter/utils'
 import { SortingType } from './table/data'
 
-type KeywordChangedType = {
-  page: number
-  refKeyword: React.RefObject<HTMLInputElement>
-  keyword: string
-}
-
 type FilterType = {
   keyword: string
   page: number
@@ -35,16 +29,6 @@ const generateDefaultFilter = (field: Filter) => {
     label: '0 - 2000',
     value: defaultRangePrice,
   }
-}
-
-const waitForKeywordChanged = ({
-  page,
-  refKeyword,
-  keyword,
-}: KeywordChangedType) => {
-  if (page === 1 && refKeyword.current?.value) return keyword !== ''
-
-  return true
 }
 
 const generateQueryKeys = ({
@@ -92,9 +76,4 @@ const generateParamsFromFilter = ({
   return queries
 }
 
-export {
-  generateDefaultFilter,
-  waitForKeywordChanged,
-  generateQueryKeys,
-  generateParamsFromFilter,
-}
+export { generateDefaultFilter, generateQueryKeys, generateParamsFromFilter }
