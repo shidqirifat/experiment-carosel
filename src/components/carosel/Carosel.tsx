@@ -20,7 +20,7 @@ const breakpoints = {
 
 export default function Carosel({ products }: ProductCaroselProps) {
   const { setSwiper, updateActiveSlide } = useSwiper()
-  const { display, setDisplay } = useDisplay()
+  const { display } = useDisplay()
   const [paddingSize, setPaddingSize] = useState(0)
 
   const initialSwiper = (swiper: any) => setSwiper(swiper)
@@ -40,15 +40,6 @@ export default function Carosel({ products }: ProductCaroselProps) {
       (window.innerWidth - caroselHeader.offsetWidth + 96) / 2
     )
   }
-
-  useEffect(() => {
-    setDisplay()
-    window.addEventListener('resize', setDisplay)
-
-    return () => {
-      window.removeEventListener('resize', setDisplay)
-    }
-  }, [])
 
   useEffect(() => {
     getPaddingLeft()
