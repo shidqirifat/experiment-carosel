@@ -55,7 +55,7 @@ const tableHeaders: Array<TableHeaderProps> = [
   { name: 'Name', isSorting: true },
   { name: 'Category' },
   { name: 'Price', isSorting: true },
-  { name: 'Description' },
+  { name: 'Description', className: 'min-w-[300px]' },
 ]
 
 const skeletons = [

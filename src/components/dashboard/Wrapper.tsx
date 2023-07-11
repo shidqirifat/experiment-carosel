@@ -155,7 +155,7 @@ export default function Wrapper() {
         sort={sort}
         onSort={handleSort}
       />
-      <div className="px-6 md:px-12 mb-12 flex justify-between items-center">
+      <div className="px-6 md:px-12 mb-12 flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div className="flex items-center gap-3">
           <h3>Show</h3>
           <InputOption
