@@ -133,7 +133,7 @@ export default function Wrapper() {
 
   return (
     <Container>
-      <div className="flex flex-wrap md:flex-nowrap gap-4 mb-4">
+      <div className="px-6 md:px-12 flex flex-wrap md:flex-nowrap gap-4 mb-4">
         <Input
           ref={refKeyword}
           type="text"
@@ -155,7 +155,7 @@ export default function Wrapper() {
         sort={sort}
         onSort={handleSort}
       />
-      <div className="mb-12 flex justify-between items-center">
+      <div className="px-6 md:px-12 mb-12 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <h3>Show</h3>
           <InputOption

@@ -2,7 +2,10 @@ import ButtonSlide from './ButtonSlide'
 
 export default function CaroselHeader() {
   return (
-    <div className="flex justify-between items-center mb-5 mt-8">
+    <div
+      id="carosel-header"
+      className="flex justify-between items-center mb-5 mt-8 max-w-7xl mx-auto px-6 md:px-12"
+    >
       <h1 className="text-black font-medium text-2xl leading-7">
         Find Your Flow Fits
       </h1>

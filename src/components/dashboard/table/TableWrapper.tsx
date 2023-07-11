@@ -19,7 +19,7 @@ export default function TableWrapper({
   onSort,
 }: TableProps) {
   return (
-    <Table classNameWrapper="max-h-[660px] h-auto mb-6">
+    <Table classNameWrapper="px-6 md:px-12 max-h-[660px] h-auto mb-6">
       <TableHeader className="sticky top-0 bg-white">
         <TableRow>
           {tableHeaders.map((header) => (

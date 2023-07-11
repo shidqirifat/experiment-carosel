@@ -8,6 +8,7 @@ import { Product } from '../../services/product'
 import SkeletonCard from './SkeletonCard'
 import { fakeArray } from '../../utils/array'
 import CaroselCard from './CaroselCard'
+import { useEffect, useState } from 'react'
 
 type ProductCaroselProps = { products: Product[] }
 
@@ -16,8 +17,19 @@ const breakpoints = {
   768: { slidesPerView: 3 },
 }
 
+const getPaddingLeft = () => {
+  const caroselHeader = document.getElementById('carosel-header')
+  if (!caroselHeader) return 0
+
+  const widthWindow = window.innerWidth
+  if (widthWindow <= 768) return 24
+
+  return (widthWindow - caroselHeader.offsetWidth + 96) / 2
+}
+
 export default function Carosel({ products }: ProductCaroselProps) {
   const { setSwiper, updateActiveSlide } = useSwiper()
+  const [paddingSize, setPaddingSize] = useState(0)
 
   const initialSwiper = (swiper: any) => setSwiper(swiper)
 
@@ -26,12 +38,26 @@ export default function Carosel({ products }: ProductCaroselProps) {
     updateActiveSlide({ isBeginning, isEnd })
   }
 
+  useEffect(() => {
+    const handleChangeKey = () => setPaddingSize(getPaddingLeft())
+
+    handleChangeKey()
+    window.addEventListener('resize', handleChangeKey)
+
+    return () => {
+      window.removeEventListener('resize', handleChangeKey)
+    }
+  }, [])
+
   return (
     <div>
       <Swiper
         spaceBetween={12}
         breakpoints={breakpoints}
-        className="px-6 pb-6 md:px-12"
+        className="!pb-6"
+        style={{
+          padding: `0 24px 24px ${paddingSize}px`,
+        }}
         modules={[Scrollbar]}
         scrollbar={{ draggable: true, hide: true }}
         onAfterInit={(swiper) => initialSwiper(swiper)}

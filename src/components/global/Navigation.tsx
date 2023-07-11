@@ -54,7 +54,7 @@ export default function Navigation() {
   const { pathname } = useLocation()
 
   return (
-    <NavigationMenu className="mb-8">
+    <NavigationMenu className="px-6 md:px-12 mb-8">
       <NavigationMenuList>
         {navigations.map((navigation) => (
           <NavigationMenuItem key={navigation.url} className="flex gap-2">
