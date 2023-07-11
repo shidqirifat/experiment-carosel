@@ -24,8 +24,10 @@ import { generateActiveLabelRangePrice, initialFilter } from './filter/utils'
 import { queryUrlToObject } from '../../utils/url'
 import Container from '../global/Container'
 import useReady from '../../hooks/useReady'
+import { useDisplay } from '../../store/display'
 
 export default function Wrapper() {
+  const { display } = useDisplay()
   const [filter, setFilter] = useState<Filters>(initialFilter)
   const [keyword, setKeyword] = useDebouncedState('', 200)
   const [row, setRow] = useState('10')
@@ -169,7 +171,7 @@ export default function Wrapper() {
         <Pagination
           color="dark"
           total={10}
-          siblings={1}
+          siblings={display.small ? 0 : 1}
           value={page}
           onChange={setPage}
         />
